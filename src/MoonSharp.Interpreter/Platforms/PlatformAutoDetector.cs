@@ -122,7 +122,8 @@ namespace MoonSharp.Interpreter.Platforms
 #if DOTNET_CORE
 			return new DotNetCorePlatformAccessor();
 #else
-			return new StandardPlatformAccessor();
+			//return new StandardPlatformAccessor();
+			return new LimitedPlatformAccessor();
 #endif
 #endif
 		}
