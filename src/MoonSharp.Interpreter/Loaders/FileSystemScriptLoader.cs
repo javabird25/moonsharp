@@ -1,4 +1,5 @@
 ﻿#if DOTNET_CORE || (!(PCL || ENABLE_DOTNET || NETFX_CORE))
+using Sandbox;
 using System.IO;
 
 namespace MoonSharp.Interpreter.Loaders
@@ -15,7 +16,7 @@ namespace MoonSharp.Interpreter.Loaders
 		/// <returns></returns>
 		public override bool ScriptFileExists(string name)
 		{
-			return File.Exists(name);
+			return FileSystem.Data.FileExists(name);
 		}
 
 		/// <summary>

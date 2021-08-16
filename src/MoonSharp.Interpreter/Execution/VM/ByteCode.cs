@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using Sandbox;
 using MoonSharp.Interpreter.Debugging;
 
 namespace MoonSharp.Interpreter.Execution.VM
@@ -72,7 +73,7 @@ namespace MoonSharp.Interpreter.Execution.VM
 					sb.AppendFormat("{0:X8}  {1}\n", i, Code[i]);
 			}
 
-			File.WriteAllText(file, sb.ToString());
+			FileSystem.Data.WriteAllText(file, sb.ToString());
 		}
 	#endif
 
