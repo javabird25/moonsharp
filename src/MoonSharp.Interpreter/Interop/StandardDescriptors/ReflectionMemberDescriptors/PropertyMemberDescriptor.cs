@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading;
 using MoonSharp.Interpreter.Compatibility;
@@ -163,60 +162,60 @@ namespace MoonSharp.Interpreter.Interop
 
 		internal void OptimizeGetter()
 		{
-			using (PerformanceStatistics.StartGlobalStopwatch(PerformanceCounter.AdaptersCompilation))
-			{
-				if (m_Getter != null)
-				{
-					if (IsStatic)
-					{
-						var paramExp = Expression.Parameter(typeof(object), "dummy");
-						var propAccess = Expression.Property(null, PropertyInfo);
-						var castPropAccess = Expression.Convert(propAccess, typeof(object));
-						var lambda = Expression.Lambda<Func<object, object>>(castPropAccess, paramExp);
-						Interlocked.Exchange(ref m_OptimizedGetter, lambda.Compile());
-					}
-					else
-					{
-						var paramExp = Expression.Parameter(typeof(object), "obj");
-						var castParamExp = Expression.Convert(paramExp, this.PropertyInfo.DeclaringType);
-						var propAccess = Expression.Property(castParamExp, PropertyInfo);
-						var castPropAccess = Expression.Convert(propAccess, typeof(object));
-						var lambda = Expression.Lambda<Func<object, object>>(castPropAccess, paramExp);
-						Interlocked.Exchange(ref m_OptimizedGetter, lambda.Compile());
-					}
-				}
-			}
+			//using (PerformanceStatistics.StartGlobalStopwatch(PerformanceCounter.AdaptersCompilation))
+			//{
+			//	if (m_Getter != null)
+			//	{
+			//		if (IsStatic)
+			//		{
+			//			var paramExp = Expression.Parameter(typeof(object), "dummy");
+			//			var propAccess = Expression.Property(null, PropertyInfo);
+			//			var castPropAccess = Expression.Convert(propAccess, typeof(object));
+			//			var lambda = Expression.Lambda<Func<object, object>>(castPropAccess, paramExp);
+			//			Interlocked.Exchange(ref m_OptimizedGetter, lambda.Compile());
+			//		}
+			//		else
+			//		{
+			//			var paramExp = Expression.Parameter(typeof(object), "obj");
+			//			var castParamExp = Expression.Convert(paramExp, this.PropertyInfo.DeclaringType);
+			//			var propAccess = Expression.Property(castParamExp, PropertyInfo);
+			//			var castPropAccess = Expression.Convert(propAccess, typeof(object));
+			//			var lambda = Expression.Lambda<Func<object, object>>(castPropAccess, paramExp);
+			//			Interlocked.Exchange(ref m_OptimizedGetter, lambda.Compile());
+			//		}
+			//	}
+			//}
 		}
 
 		internal void OptimizeSetter()
 		{
-			using (PerformanceStatistics.StartGlobalStopwatch(PerformanceCounter.AdaptersCompilation))
-			{
-				if (m_Setter != null && !(Framework.Do.IsValueType(PropertyInfo.DeclaringType)))
-				{
-					MethodInfo setterMethod = Framework.Do.GetSetMethod(PropertyInfo);
+			//using (PerformanceStatistics.StartGlobalStopwatch(PerformanceCounter.AdaptersCompilation))
+			//{
+			//	if (m_Setter != null && !(Framework.Do.IsValueType(PropertyInfo.DeclaringType)))
+			//	{
+			//		MethodInfo setterMethod = Framework.Do.GetSetMethod(PropertyInfo);
 
-					if (IsStatic)
-					{
-						var paramExp = Expression.Parameter(typeof(object), "dummy");
-						var paramValExp = Expression.Parameter(typeof(object), "val");
-						var castParamValExp = Expression.Convert(paramValExp, this.PropertyInfo.PropertyType);
-						var callExpression = Expression.Call(setterMethod, castParamValExp);
-						var lambda = Expression.Lambda<Action<object, object>>(callExpression, paramExp, paramValExp);
-						Interlocked.Exchange(ref m_OptimizedSetter, lambda.Compile());
-					}
-					else
-					{
-						var paramExp = Expression.Parameter(typeof(object), "obj");
-						var paramValExp = Expression.Parameter(typeof(object), "val");
-						var castParamExp = Expression.Convert(paramExp, this.PropertyInfo.DeclaringType);
-						var castParamValExp = Expression.Convert(paramValExp, this.PropertyInfo.PropertyType);
-						var callExpression = Expression.Call(castParamExp, setterMethod, castParamValExp);
-						var lambda = Expression.Lambda<Action<object, object>>(callExpression, paramExp, paramValExp);
-						Interlocked.Exchange(ref m_OptimizedSetter, lambda.Compile());
-					}
-				}
-			}
+			//		if (IsStatic)
+			//		{
+			//			var paramExp = Expression.Parameter(typeof(object), "dummy");
+			//			var paramValExp = Expression.Parameter(typeof(object), "val");
+			//			var castParamValExp = Expression.Convert(paramValExp, this.PropertyInfo.PropertyType);
+			//			var callExpression = Expression.Call(setterMethod, castParamValExp);
+			//			var lambda = Expression.Lambda<Action<object, object>>(callExpression, paramExp, paramValExp);
+			//			Interlocked.Exchange(ref m_OptimizedSetter, lambda.Compile());
+			//		}
+			//		else
+			//		{
+			//			var paramExp = Expression.Parameter(typeof(object), "obj");
+			//			var paramValExp = Expression.Parameter(typeof(object), "val");
+			//			var castParamExp = Expression.Convert(paramExp, this.PropertyInfo.DeclaringType);
+			//			var castParamValExp = Expression.Convert(paramValExp, this.PropertyInfo.PropertyType);
+			//			var callExpression = Expression.Call(castParamExp, setterMethod, castParamValExp);
+			//			var lambda = Expression.Lambda<Action<object, object>>(callExpression, paramExp, paramValExp);
+			//			Interlocked.Exchange(ref m_OptimizedSetter, lambda.Compile());
+			//		}
+			//	}
+			//}
 		}
 
 		/// <summary>
